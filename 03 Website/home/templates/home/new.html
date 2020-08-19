@@ -1,0 +1,91 @@
+<!--Modified, Moderate changes has made -->
+<!--Reference: http://www.free-css.com/free-css-templates/page207/gotya and few edits made(see copyright in the
+<!-- bottom), modified some css attributes in my.css, other css and js files are download through the above link.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CHB{% endblock %}</title>
+    {%  load staticfiles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/bootstrap-responsive.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/my.css' %}" />
+    <script src="{% static "home/js/bootstrap.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/carousel.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/custom.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/flexslider.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/jquery.cslider.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/jquery.gmap.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/jquery-1.8.2.js" %}" type="text/javascript"></script>
+    <script src="{% static "home/js/slider.js" %}" type="text/javascript"></script>
+    <div class="container">
+        <div class="row">
+            <div class="logo span3">
+                <a class="brand" href="#">
+                    <img src="{% static "home/img/logo.gif" %}"
+                         alt="logo"/ width="80%" height="80%">
+                </a>
+            </div>
+            <div class="span9">
+                <div class="navbar navbar-inverse">
+                    <div class="navbar-inner">
+                        <ul class="nav">
+                            <li class="{% block home_active %}{% endblock %}">
+                                <a href="/home" tyle="color:#730808">Home</a></li>
+                            <li class="{% block route_active %}{% endblock %}">
+                                <a href="/route"tyle="color:#730808">Route</a></li>
+                            <li class="{% block view_active %}{% endblock %}">
+                                <a href="/visual_crime" tyle="color:#730808">View Data</a></li>
+                            <li class="{% block analysis_active %}{% endblock %}">
+                                <a href="/analysis" tyle="color:#730808">Data Analysis</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+<body>
+    {% block body %}
+    {% endblock %}
+    <div id="footer-menu" class="hidden-tablet hidden-phone">
+        <div class="container">
+            <div class="row">
+                <div class="span2">
+                    <div id="footer-menu-logo">
+                        <a href="#"><img src="{% static "home/img/logo-footer-menu.png" %}"
+                                         alt="logo"/ width="70%" height="70%"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="span13">
+                    <h3>About Us</h3>
+                    <p>
+                        CHB is a web mapping service builds on Google Map API, and is developed by CHB group. 
+                        It provides safe directions for automobile and pedestrian to commute in Hype Park, Chicago.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="copyright">
+        <div class="container">
+            <p>
+                &copy; 2013, creativeLabs. <a href="http://bootstrapmaster.com" alt="Bootstrap Themes">Bootstrap Themes</a>
+                designed by BootstrapMaster in Poland <img src="{% static "home/img/poland2.png" %}"
+                                                           alt="Poland" style="margin-top:-4px">
+            </p>
+        </div>
+    </div>
+</body>
+</html>

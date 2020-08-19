@@ -1,0 +1,97 @@
+<!--Modified-->
+<!--Reference:-->
+<!--https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform?hl-->
+<!--https://stackoverflow.com/questions/8779886/exceed-23-waypoint-per-request-limit-on-google-directions-api- -->
+<!--business-work-lev-->
+{% extends 'home/new.html' %}
+{%  load staticfiles %}
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+{% block title %}{{ map }}{% endblock %}
+{% block route_active %}active{% endblock %}
+{% block body %}
+    <div id="googlemaps-container-top"></div>
+    <div id="googlemaps" class="google-map google-map-full"></div>
+    <div id="googlemaps-container-bottom"></div>
+    <script async defer src=
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyChS_xnOZ7MVdUYBgkL3b79x_WHCmggUgI&callback=initMap">
+    </script>
+    <script>
+
+    function initMap() {
+        var service = new google.maps.DirectionsService;
+        var map = new google.maps.Map(document.getElementById("googlemaps"));
+
+        // Get waypoints for routes
+        function wpt(){
+            var stations = [];
+            var wpt_origin = {{ pts }};
+            while (wpt_origin.length > 0){
+                stations.push({lat: wpt_origin[0], lng: wpt_origin[1], name:'station'});
+                wpt_origin.splice(0,2);
+            };
+            return stations
+        };
+
+        var stations = wpt();
+        var lngs = stations.map(function(station) { return station.lng; });
+        var lats = stations.map(function(station) { return station.lat; });
+
+        map.fitBounds({
+            west: Math.min.apply(null, lngs),
+            east: Math.max.apply(null, lngs),
+            north: Math.min.apply(null, lats),
+            south: Math.max.apply(null, lats),
+        });
+
+        // Show stations on the map as markers
+        for (var i = 0; i < stations.length; i++) {
+            if (!stations[i].name)
+                continue;
+            new google.maps.Marker({
+                position: stations[i],
+                map: map,
+                title: 'pts',
+            });
+        }
+
+        // Divide route to several parts because max stations limit is 25 (23 waypoints + 1 origin + 1 destination)
+        for (var i = 0, parts = [], max =  25- 1; i < stations.length; i = i + max)
+            parts.push(stations.slice(i, i + max + 1));
+
+        // Callback function to process service results
+        var service_callback = function(response, status) {
+            if (status != 'OK') {
+                console.log('Directions request failed due to ' + status);
+                return;
+            }
+            var renderer = new google.maps.DirectionsRenderer;
+            renderer.setMap(map);
+            renderer.setOptions({ suppressMarkers: true, preserveViewport: true });
+            renderer.setDirections(response);
+        };
+
+        // Send requests to service to get route (for stations count <= 25 only one request will be sent)
+        for (var i = 0; i < parts.length; i++) {
+                // Waypoints does not include first station (origin) and last station (destination)
+            var waypoints = [];
+            for (var j = 1; j < parts[i].length - 1; j++)
+                waypoints.push({location: parts[i][j], stopover: false});
+                // Service options
+                var service_options = {
+                    origin: parts[i][0],
+                    destination: parts[i][parts[i].length - 1],
+                    waypoints: waypoints,
+                    travelMode: '{{ mode_option }}'
+                };
+                // Send request
+            service.route(service_options, service_callback);
+            }
+        }
+    </script>
+    <div class="container">
+    <p><font size="3">
+        You can use ctrl+scroll to zoom the map. Our route avoids dangerous areas.
+        Red markers are used to display the route. If you see the blue routes has weird detour, Please follow the
+        red markers.
+    </font></p>
+{% endblock %}

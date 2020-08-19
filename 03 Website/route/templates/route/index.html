@@ -1,0 +1,90 @@
+<!-- Original-->
+<!--Reference https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform?hl-->
+{% extends 'home/new.html' %}
+{%  load staticfiles %}
+{% block title %}{{ route_form }}{% endblock %}
+{% block route_active %}active{% endblock %}
+{% block body %}
+    <div id="page-title">
+        <div id="page-title-inner">
+            <div class="container">
+                <h2><i class="ico-usd ico-white"></i>Find a safe route</h2>
+            </div>
+        </div>
+    </div>
+  {% if messages %}
+      {% for message in messages %}
+          {% if message.tags == 'success' %}
+              <div class="alert alert-success" role="alert">{{ message|escape|safe }}</div>
+          {% elif message.tags == 'error' %}
+              <div class="alert alert-danger" role="alert">{{ message|escape|safe }}</div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
+    <div class="container">
+    <div class = 'form_only'>
+        <form action="map" method="get" >
+            <fieldset>
+                <legend id='kuang'><h4>Where and when do you like to go?</h4><br>
+                </legend>
+                <h4>
+                  Our crime data <span style="color: red">only</span> covers <span style="color: red">Hyde Park</span>, please
+                  type/choose locations that are in Hyde Park. If you can't find your destination/origin places
+                  from the drop down box, you are also free to type the destination and origin place.If you don't choose
+                  a departure date and time, we set the current time and date as default.
+                </h4><br><br>
+                <h4> From :</h4><br>
+                <input id="autocomplete1" placeholder="Origin" type="text" name="origin"  style="width: 400px; margin: auto";>
+                </input><br><br>
+                <h4> To:</h4><br>
+                <input id="autocomplete2" placeholder="Destination" type="text" name ="destination"  style="width: 400px;margin: auto">
+                </input><br><br>
+                <h4>Choose mode:</h4><br>
+                <input type="radio" name="mode" value="walking" style="margin: auto" checked> Walking<br>
+                <input type="radio" name="mode" value="bicycling"> Bicycle<br>
+                <input type="radio" name="mode" value="driving"> Driving<br><br>
+                <h4>Choose departure date:</h4><br>
+                <input id="dateID" type="date"  name="user_date"  method="get"><br><br>
+                <h4>Choose departure time:</h4><br>
+                <input type="time" name="user_time"  method="get"><br><br>
+                <input type="submit" value="Submit">
+            </fieldset>
+
+	  </form>
+    </div>
+    </div>
+    <script>
+    // Reference:
+    // https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform?hl
+    var autocomplete1,autocomplete2;
+    var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(41.78013 -87.615546),
+        new google.maps.LatLng(41.809241, -87.575706));
+
+    var options = {bounds: defaultBounds, placeIdOnly: true};
+    function initAutocomplete() {
+        autocomplete1 = new google.maps.places.Autocomplete((document.getElementById('autocomplete1')),
+            options).setComponentRestrictions(
+            {'country': ['us']});
+		autocomplete2 = new google.maps.places.Autocomplete((document.getElementById('autocomplete2'))
+            ,options).setComponentRestrictions(
+            {'country': ['us']});;
+        autocomplete1.addListener('place_changed', function() {
+          var place1 = autocomplete1.getPlace();
+          if (!place1.place_id) {
+            window.alert("Please select an option from the dropdown list.");
+            return;
+		  }});
+		autocomplete2.addListener('place_changed', function() {
+          var place2 = autocomplete2.getPlace();
+          if (!place2.place_id) {
+            window.alert("Please select an option from the dropdown list.");
+            return}});
+		autocomplete1.setBounds(defaultBounds);
+		autocomplete2.setBounds(defaultBounds);
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChS_xnOZ7MVdUYBgkL3b79x_WHCmggUgI
+    &libraries=places&callback=initAutocomplete" async defer>
+    </script>
+{% endblock %}

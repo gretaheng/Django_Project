@@ -1,0 +1,113 @@
+<!-- The html part is original code-->
+<!-- The javascript part is direct copy, minor changes are made.-->
+<!-- Reference: https://stackoverflow.com/questions/37146565/make-an-image-bigger-on-click-and-go-back-to- -->
+<!-- small-on-second-click-->
+
+{% extends 'home/new.html' %}
+{%  load staticfiles %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+{% block title %}{{ analysis }}{% endblock %}
+{% block analysis_active %}active{% endblock %}
+{% block body %}
+    <div id="page-title">
+        <div id="page-title-inner">
+            <div class="container">
+                <h2><i class="ico-usd ico-white"></i>Crime Data Analysis</h2>
+            </div>
+        </div>
+    </div>
+    <div class = "container">
+        <div class = "container">
+            <h3 style="font-size: 20px">
+            Below is the data analysis
+        </h3>
+            <table style="width:100%">
+                <tr>
+                    <td width="60%">
+                        <img id="imgtab1" class='small' src="{% static "home/img/ana1.png" %}" align="middle"
+                             hspace="50">
+                    </td>
+                    <td width="40%"><p><b>Count for Crime by month, 2013-2017:</b></p>
+                        <p><font size="3">
+                            Each box refers to number of crimes happened within a month in a certain year.
+                            Overall, occurrences of crimes are pretty even cross month and cross year,
+                            with small peaks from summer to fall.</font></p>
+                        <p>Data Source: City of Chicago, Data Portal.</p></td>
+                </tr>
+                <tr>
+                    <td><img id="imgtab2" class='small' src="{% static "home/img/ana2.png" %}" align="middle"
+                             hspace="50"></td>
+                    <td><p><b>Count for Crime by primary crime type, 2013-2017:</b></p>
+                        <p><font size="3">
+                            Each box refers to number of crimes happened belong to a crime type in a
+                            certain year. Overall, more crimes happened in Hyde Park were theft, battery, and criminal
+                            damage.
+                            Note: Crimes number <= 2 were removed from the graph. ‘Vio’ stands for Violence.
+                        </font></p>
+                        <p>Data Source: City of Chicago, Data Portal.</p></td>
+                </tr>
+                <tr>
+                    <td><img id="imgtab3" class='small' src="{% static "home/img/ana3.png" %}" align="middle"
+                             hspace="50"></td>
+                    <td><p><b>Count of Crime by aggregate crime type, 2013–2017:</b></p>
+                        <p><font size="2">Based on the damage level for humans of a certain crime, crime types are
+                            categorized into five aggregate types.<br>
+                            Damage Level 1: Deceptive practice, Interference with pubic officer, Liquor law violation,
+                            Public peace violation; <br>Damage Level 2: Concealed carry license violation,
+                            Narcotics, Theft, Stalking; <br>Damage Level 3: Criminal damage, Intimidation,
+                            Motor Vehicle theft, Obscenity, Public indecency ; <br>Damage Level 4: Assault, Battery,
+                            Burglary, Robbery, Weapons violation; <br>Damage Level 5: Criminal sexual assault, Homicide,
+                            Human trafficking, Kidnapping, Murder, Offense involving children, Sex offense<br>
+                            Each box refers to number of crimes happened belong to an aggregate crime type in a certain
+                            year. Overall, more crimes happened in Hyde Park were crime type 2 and crime type 4 crimes.
+                        </font></p>
+                        <p>Data Source: City of Chicago, Data Portal</p></td>
+                </tr>
+                <tr>
+                    <td><img id="imgtab4" class='small' src="{% static "home/img/ana4.png" %}" align="middle"
+                             hspace="50"></td>
+                    <td><p><b>Count for Crime by Time Slot, 2013–2017:</b></p>
+                        <p><font size="3">
+                                A day is divided into 12 timeslots. Each bar refers to the total number of
+                                crimes happened within a timeslot from 2013-2017. Overall, more crimes happened
+                                from noon to midnight.
+                            </font></p>
+                        <p>Data Source: City of Chicago, Data Portal</p></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        var small={width: "300px",height: "174px"};
+        var large={width: "900px",height: "400px"};
+        $(document).ready(function () {
+            var count=1;
+            $("#imgtab1").css(small).on('click',function () {
+                $(this).animate((count==1)?large:small);
+                count = 1-count;
+            });
+        });
+        $(document).ready(function () {
+            var count=1;
+            $("#imgtab2").css(small).on('click',function () {
+                $(this).animate((count==1)?large:small);
+                count = 1-count;
+            });
+        });
+        $(document).ready(function () {
+            var count=1;
+            $("#imgtab3").css(small).on('click',function () {
+                $(this).animate((count==1)?large:small);
+                count = 1-count;
+            });
+        });
+        $(document).ready(function () {
+            var count=1;
+            $("#imgtab4").css(small).on('click',function () {
+                $(this).animate((count==1)?large:small);
+                count = 1-count;
+            });
+        });
+    </script>
+
+{% endblock %}
